@@ -15,7 +15,25 @@ $ pip install -r requirements.txt
 $ ./standalone.sh
 ```
 
+###### Access the admin console through `http://localhost:8080`
+![Admin console](./img/admin_console.png)
+
+###### Adding the Realm in Keycloak
+![Add realm](./img/add_realm.png)
+
+###### Create Client in Keycloak admin called Mozart
+- Make sure `Access Type` is `confidential`
+![Create Client](./img/mozart_access_type.png)
+
+###### Create Realm roles through the admin
+![Create Role](./img/roles.png)
+
+###### Create User in the realm then map the roles to the user
+![Map roles to user](./img/role_mappings.png)
+
 #### Filling in client_secrets.json with parameters from Keycloak
+`client_secret` can be retrieved in the admin page for the `Mozart` client
+![Mozart client secret](./img/client_secret.png)
 ```
 {
   "web": {
@@ -58,6 +76,7 @@ eyJhbGciOiJSUzI...cdsh5qONTHr7tsfOiKWSA5fscWaQ
 
 #### Testing out Flask API endpoints
 ```
+# returns 401 because /api endpoint is secured
 $ curl -s http://localhost:5000/api | jq
 {
   "error": "invalid_token",
@@ -66,6 +85,10 @@ $ curl -s http://localhost:5000/api | jq
 
 $ curl -s -H "Authorization: Bearer $AUTH_TOKEN" http://localhost:5000/api | jq
 {
-  "hello": "World!!"
+  "hello": "World!!",
+  "roles": [
+    "operator",
+    "sa"
+  ]
 }
 ```

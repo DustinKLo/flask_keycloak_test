@@ -1,16 +1,21 @@
-from flask import Flask, g, jsonify
+import json
+
+from flask import Flask, g, jsonify, request
 from flask_oidc import OpenIDConnect
+
+import jwt
 
 
 app = Flask(__name__)
 
+SECRET_KEY = 'test_secret_key'
+
 app.config.update({
-    'SECRET_KEY': 'dustin_secret_key',
+    'SECRET_KEY': SECRET_KEY,
     'TESTING': True,
     'DEBUG': True,
     'OIDC_CLIENT_SECRETS': 'client_secrets.json',
     'OIDC_OPENID_REALM': 'hysds',
-    # 'OIDC_INTROSPECTION_AUTH_METHOD': 'bearer',
     'OIDC_INTROSPECTION_AUTH_METHOD': 'client_secret_post',
     'OIDC_TOKEN_TYPE_HINT': 'access_token',
     'OIDC-SCOPES': ['openid']
@@ -18,6 +23,10 @@ app.config.update({
 
 
 oidc = OpenIDConnect(app)
+
+sa_data = ['sa1', 'sa2', 'sa3']
+operator_data = ['operator1', 'operator2', 'operator3']
+guest_data = ['guest1']
 
 
 @app.route('/', methods=['GET'])
@@ -28,11 +37,23 @@ def no_token_api():
 
 
 @app.route('/api', methods=['GET'])
-@oidc.accept_token(require_token=True)#, scopes_required=['openid'])
+@oidc.accept_token(require_token=True)
 def test_token_api():
-    # g.oidc_token_info['sub']
+    print(request.headers)
+
+    # auth = request.headers['Authorization']
+    # token = auth.split(' ')[1]
+    # payload = jwt.decode(token, SECRET_KEY, verify=False)
+    # print(json.dumps(payload, indent=2))
+
+    payload = g.oidc_token_info
+    print(json.dumps(payload, indent=2))
+
+    roles = payload['realm_access']['roles']
+
     return jsonify({
-        'hello': 'World!!'
+        'hello': 'World!!',
+        'roles': roles
     })
 
 
