@@ -1,6 +1,18 @@
+Testing out Keycloak authentication in a Flask Rest API
+https://www.keycloak.org/
+
+#### Activate virtual environment
+```
+# Preferably python3
+$ virtualenv env
+
+$ source env/bin/activate
+$ pip install -r requirements.txt
+```
+
 #### Starting Keycloak server
 ```
-./standalone.sh
+$ ./standalone.sh
 ```
 
 #### Filling in client_secrets.json with parameters from Keycloak
@@ -24,16 +36,17 @@
 
 #### Start Flask app
 ```
-flask run
+# separate tab
+$ flask run
 ```
 
 #### Getting auth token from Keycloak
 ```
-export USERNAME=username
-export PASSWORD=password
-export CLIENT_SECRET=<client secret from Keycloak>
+$ export USERNAME=username
+$ export PASSWORD=password
+$ export CLIENT_SECRET=<client secret from Keycloak>
 
-export AUTH_TOKEN=`curl -s \
+$ export AUTH_TOKEN=`curl -s \
   -d "client_id=mozart" -d "client_secret=$CLIENT_SECRET" \
   -d "username=$USERNAME" -d "password=$PASSWORD" \
   -d "grant_type=password" \
