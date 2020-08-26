@@ -1,12 +1,14 @@
 import json
 
 from flask import Flask, g, jsonify, request
+from flask_cors import CORS
 from flask_oidc import OpenIDConnect
 
 import jwt
 
 
 app = Flask(__name__)
+CORS(app)
 
 SECRET_KEY = 'test_secret_key'
 
@@ -53,7 +55,7 @@ def test_token_api():
 
     return jsonify({
         'hello': 'World!!',
-        'roles': roles
+        'payload': payload
     })
 
 
