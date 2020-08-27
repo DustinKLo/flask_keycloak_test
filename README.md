@@ -86,9 +86,45 @@ $ curl -s http://localhost:5000/api | jq
 $ curl -s -H "Authorization: Bearer $AUTH_TOKEN" http://localhost:5000/api | jq
 {
   "hello": "World!!",
-  "roles": [
-    "operator",
-    "sa"
-  ]
+  "payload": {
+    "acr": "1",
+    "active": true,
+    "allowed-origins": [
+      "*"
+    ],
+    "aud": "account",
+    "azp": "mozart",
+    "client_id": "mozart",
+    "email": "d1073601@yahoo.com",
+    "email_verified": true,
+    "exp": 1598489834,
+    "family_name": "lo",
+    "given_name": "dustin",
+    "iat": 1598486234,
+    "iss": "http://localhost:8080/auth/realms/hysds",
+    "jti": "727e6888-a2b5-44e0-b2e4-ce07b04367ae",
+    "name": "dustin lo",
+    "preferred_username": "username",
+    "realm_access": {
+      "roles": [
+        "operator",
+        "sa"
+      ]
+    },
+    "resource_access": {
+      "account": {
+        "roles": [
+          "manage-account",
+          "manage-account-links",
+          "view-profile"
+        ]
+      }
+    },
+    "scope": "profile email",
+    "session_state": "9cf2b2da-691a-4cda-bcc8-a858a67b7fb3",
+    "sub": "0db437a6-aed2-4cce-8aa1-248142dce5d9",
+    "typ": "Bearer",
+    "username": "username"
+  }
 }
 ```
