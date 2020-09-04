@@ -128,3 +128,15 @@ $ curl -s -H "Authorization: Bearer $AUTH_TOKEN" http://localhost:5000/api | jq
   }
 }
 ```
+
+*Note: flask-oidc allows users to also pass in tokens through query parameters (handled in `request.args`)*
+[flask-oidc source code](https://github.com/puiterwijk/flask-oidc/blob/master/flask_oidc/__init__.py#L880-L885)
+```
+curl "http://localhost:5000/api?access_token=$AUTH_TOKEN" | jq
+{
+  "hello": "World!!",
+  .
+  .
+  .
+}
+```
