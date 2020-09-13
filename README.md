@@ -76,14 +76,14 @@ eyJhbGciOiJSUzI...cdsh5qONTHr7tsfOiKWSA5fscWaQ
 
 #### Testing out Flask API endpoints
 ```
-# returns 401 because /api endpoint is secured
-$ curl -s http://localhost:5000/api | jq
+# returns 401 because /api/test endpoint is secured
+$ curl -s http://localhost:5000/api/test | jq
 {
   "error": "invalid_token",
   "error_description": "Token required but invalid"
 }
 
-$ curl -s -H "Authorization: Bearer $AUTH_TOKEN" http://localhost:5000/api | jq
+$ curl -s -H "Authorization: Bearer $AUTH_TOKEN" http://localhost:5000/api/test | jq
 {
   "hello": "World!!",
   "payload": {
@@ -132,7 +132,7 @@ $ curl -s -H "Authorization: Bearer $AUTH_TOKEN" http://localhost:5000/api | jq
 *Note: flask-oidc allows users to also pass in tokens through query parameters (handled in `request.args`)*
 [flask-oidc source code](https://github.com/puiterwijk/flask-oidc/blob/master/flask_oidc/__init__.py#L880-L885)
 ```
-curl "http://localhost:5000/api?access_token=$AUTH_TOKEN" | jq
+curl "http://localhost:5000/api/test?access_token=$AUTH_TOKEN" | jq
 {
   "hello": "World!!",
   .
