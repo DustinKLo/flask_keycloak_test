@@ -36,39 +36,36 @@ class NewOpenIDConnect(OpenIDConnect):
                 print('HEADERS ############################################')
                 print(request.headers)
 
-                if True:
-                    print("request coming through proxy, authenticating...")
-                    token = None
-                    if 'Authorization' in request.headers and request.headers['Authorization'].startswith('Bearer '):
-                        token = request.headers['Authorization'].split(None,1)[1].strip()
-                    if 'access_token' in request.form:
-                        token = request.form['access_token']
-                    elif 'access_token' in request.args:
-                        token = request.args['access_token']
-
-                    validity = self.validate_token(token, scopes_required)
-                    if (validity is True) or (not require_token):
-                        return view_func(*args, **kwargs)
-                    else:
-                        response_body = {
-                            'error': 'invalid_token',
-                            'error_description': validity
-                        }
-                        if render_errors:
-                            response_body = json.dumps(response_body)
-                        return response_body, 401, {'WWW-Authenticate': 'Bearer'}
-                else:
+                if True:  # will add logic later, but this is where we check if we authenticate or not
+                    print("Skip authenticating...")
                     return view_func(*args, **kwargs)
+
+                print("request coming through proxy, authenticating...")
+                token = None
+                if 'Authorization' in request.headers and request.headers['Authorization'].startswith('Bearer '):
+                    token = request.headers['Authorization'].split(None,1)[1].strip()
+                if 'access_token' in request.form:
+                    token = request.form['access_token']
+                elif 'access_token' in request.args:
+                    token = request.args['access_token']
+
+                validity = self.validate_token(token, scopes_required)
+                if (validity is True) or (not require_token):
+                    return view_func(*args, **kwargs)
+                else:
+                    response_body = {
+                        'error': 'invalid_token',
+                        'error_description': validity
+                    }
+                    if render_errors:
+                        response_body = json.dumps(response_body)
+                    return response_body, 401, {'WWW-Authenticate': 'Bearer'}
             return decorated
         return wrapper
 
 
 # oidc = OpenIDConnect(app)
 oidc = NewOpenIDConnect(app)
-
-sa_data = ['sa1', 'sa2', 'sa3']
-operator_data = ['operator1', 'operator2', 'operator3']
-guest_data = ['guest1']
 
 
 @app.route('/', methods=['GET'])
